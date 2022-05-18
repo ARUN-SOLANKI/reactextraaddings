@@ -1,0 +1,82 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+html {
+  font-size: 10px;
+}
+
+.outerContainer {
+  display: flex;
+  flex: row;
+}
+
+.leftContainer {
+  height: 100vh;
+  width: 40%;
+  background-image: url("../../assets/users.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.rightContainer {
+  height: 100vh;
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(186, 184, 181);
+}
+
+.formContainer {
+  width: 70%;
+  background-color: #fff;
+  padding: 3rem 2rem;
+  border-radius: 1rem;
+}
+
+.emailFilled {
+  background-color: (186, 184, 181);
+  margin-bottom: 2rem;
+}
+
+.IconbtnContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.notauser {
+  color: rgb(87, 87, 173);
+}
+.notauser:hover {
+  color: blue;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .outerContainer {
+    display: flex;
+    flex-direction: column;
+  }
+  .leftContainer {
+    width: 100%;
+    height: 30vh;
+    background-image: url("../../assets/users.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .rightContainer {
+    width: 100%;
+    height: auto;
+  }
+  .formContainer {
+    width: 100%;
+    background-color: #fff;
+    padding: 3rem 2rem;
+  }
+}
