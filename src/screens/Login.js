@@ -85,13 +85,26 @@
 
 // export default Login;
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import LoginComponent from "../components/LoginComponent";
 import SignUpComponent from "../components/SignUpComponent";
 import "./styles/LoginStyles.css";
 
 function Login() {
   const [toggleCompo, setToggleCompo] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const asyncdata = async () => {
+      const res = localStorage.getItem("token");
+      if (res) {
+        navigate("home");
+      }
+    };
+    asyncdata();
+  }, []);
+
   return (
     <div className="outerContainer">
       <div className="leftContainer"></div>
