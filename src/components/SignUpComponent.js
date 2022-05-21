@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { TextField, Typography, Box, Button, IconButton } from "@mui/material";
+import {
+  TextField,
+  Typography,
+  Box,
+  Button,
+  IconButton,
+  CircularProgress,
+} from "@mui/material";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { provider } from "../firebase.config";
 const auth = getAuth();
-function SignUpComponent({ setToggleCompo, toggleCompo }) {
+function SignUpComponent({ setToggleCompo, toggleCompo, errAlert }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [userDetails, setUserDetails] = useState({
     first: "",
     last: "",
@@ -11,6 +19,8 @@ function SignUpComponent({ setToggleCompo, toggleCompo }) {
     password: "",
   });
   const registerWithEmailAndPassword = async () => {
+    setIsLoading(true);
+
     const name = userDetails.first + " " + userDetails.last;
     const email = userDetails.email;
     const password = userDetails.password;
@@ -22,7 +32,20 @@ function SignUpComponent({ setToggleCompo, toggleCompo }) {
         password,
         name
       );
+      if (res) {
+        setIsLoading(false);
+        await errAlert(true, "success", "SignUp successfully");
+        setToggleCompo(true);
+        setUserDetails({
+          first: "",
+          last: "",
+          email: "",
+          password: "",
+        });
+      }
     } catch (err) {
+      setIsLoading(false);
+      errAlert(true, "error", "somthing went wrong");
       console.log(err, ":------------->");
     }
   };
@@ -82,6 +105,7 @@ function SignUpComponent({ setToggleCompo, toggleCompo }) {
       </Box>
       <Box className="emailFilled">
         <TextField
+          type="password"
           name="password"
           label="password"
           variant="filled"
@@ -100,7 +124,11 @@ function SignUpComponent({ setToggleCompo, toggleCompo }) {
           size="large"
           onClick={registerWithEmailAndPassword}
         >
-          SignUp
+          {isLoading ? (
+            <CircularProgress color="warning" size={15} />
+          ) : (
+            "Sign Up"
+          )}
         </Button>
 
         <Typography

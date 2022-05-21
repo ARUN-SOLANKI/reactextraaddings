@@ -1,4 +1,4 @@
-import { TextField, Button, Box } from "@mui/material";
+import { TextField, Button, Box, LinearProgress } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../screens/styles/TableStyles.css";
@@ -21,6 +21,7 @@ function Home() {
   const [inputValue, setInputValue] = useState("");
   const [isUpdate, setIsUpdate] = useState(false);
   const [editDetails, setEditDetails] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const Userid = localStorage.getItem("userId");
     setuserId(Userid);
@@ -51,6 +52,7 @@ function Home() {
   }, []);
 
   const getData = async () => {
+    setIsLoading(true);
     let upArr = [];
     const Userid = localStorage.getItem("userId");
     const querySnapshot = await getDocs(collection(db, Userid));
@@ -58,6 +60,7 @@ function Home() {
       upArr.push({ ...doc.data(), docId: doc.id });
     });
     setList(upArr);
+    setIsLoading(false);
   };
 
   const deleteItem = async (docId) => {
@@ -111,7 +114,8 @@ function Home() {
 
   return (
     <Box>
-      <Navbar />
+      <Navbar isLoading={isLoading} />
+      {isLoading && <LinearProgress />}
       <Box className="myTodo">
         <Box className="inputContainer">
           <TextField

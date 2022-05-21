@@ -21,7 +21,7 @@ import {
 import { provider, Gitprovider } from "../firebase.config";
 import { useNavigate } from "react-router-dom";
 const auth = getAuth();
-function LoginComponent({ setToggleCompo, toggleCompo }) {
+function LoginComponent({ setToggleCompo, toggleCompo, errAlert }) {
   const [isLoading, setIsLoading] = useState(false);
   const [Token, setToken] = useState("");
   const [userDetails, setUserDetails] = useState({
@@ -54,21 +54,34 @@ function LoginComponent({ setToggleCompo, toggleCompo }) {
       if (res) {
         localStorage.setItem("token", res.user.accessToken);
         localStorage.setItem("userId", res.user.uid);
+        errAlert(false, "success", "login successfully");
         setToken(res.user.accessToken);
       }
     } catch (err) {
+      errAlert(true, "error", "something went wrong");
       console.log(err);
     }
   };
 
   const logInWithEmailAndPassword = async () => {
+    setIsLoading(true);
     const { email, password } = userDetails;
     try {
       const data = await signInWithEmailAndPassword(auth, email, password);
+      if (data) {
+        setIsLoading(false);
+        errAlert(true, "success", "login successfully");
+        setUserDetails({
+          email: "",
+          password: "",
+        });
+      }
       localStorage.setItem("token", data.user.accessToken);
       localStorage.setItem("userId", data.user.uid);
       setToken(data.user.accessToken);
     } catch (err) {
+      setIsLoading(false);
+      errAlert(true, "error", "something wen wrong");
       console.error(err);
     }
   };
@@ -83,7 +96,6 @@ function LoginComponent({ setToggleCompo, toggleCompo }) {
 
   return (
     <>
-      {isLoading && <CircularProgress />}
       <div className="formContainer">
         <Typography
           variant="h3"
@@ -126,6 +138,7 @@ function LoginComponent({ setToggleCompo, toggleCompo }) {
         </Box>
         <Box className="emailFilled">
           <TextField
+            type="password"
             label="password"
             variant="filled"
             size="small"
@@ -144,7 +157,11 @@ function LoginComponent({ setToggleCompo, toggleCompo }) {
             size="large"
             onClick={logInWithEmailAndPassword}
           >
-            Login
+            {isLoading ? (
+              <CircularProgress color="warning" size={15} />
+            ) : (
+              "Login"
+            )}
           </Button>
 
           <Typography

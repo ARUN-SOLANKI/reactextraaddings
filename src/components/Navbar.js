@@ -3,9 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "../screens/styles/NavbarStyles.css";
 
 import { FaSignOutAlt } from "react-icons/fa";
-import { IconButton } from "@mui/material";
 
-const Navbar = () => {
+const Navbar = ({ isLoading }) => {
   const navigate = useNavigate();
   const clearLocal = () => {
     localStorage.clear();
