@@ -1,10 +1,9 @@
-import { useEffect } from "react";
 import Routers from "./routes/Router";
-import Login from "./screens/Login";
+import "./screens/styles/Appstyle.css";
 
 function App() {
   return (
-    <div className="App">
+    <div className="Myapp">
       <Routers />
     </div>
   );

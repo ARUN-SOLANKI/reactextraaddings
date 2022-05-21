@@ -103,6 +103,10 @@ function Login() {
       }
     };
     asyncdata();
+    console.log("Called");
+    return () => {
+      console.log("will unmount");
+    };
   }, []);
 
   return (

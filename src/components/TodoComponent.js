@@ -2,7 +2,15 @@ import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 
-function TodoComponent({ item }) {
+function TodoComponent({
+  item,
+  deleteItem,
+  handleEdit,
+  handleUppdate,
+  isUpdate,
+  setIsUpdate,
+  handleChecked,
+}) {
   return (
     <>
       <Box
@@ -13,15 +21,15 @@ function TodoComponent({ item }) {
           alignItems: "center",
         }}
       >
-        <button
-          style={{
-            width: "3rem",
-            height: "3rem",
-            background: "blue",
-            borderRadius: "5px",
-          }}
+        <h1
+          style={
+            item.checked
+              ? { height: "2rem", width: "2rem", background: "red" }
+              : { height: "2rem", width: "2rem", background: "blue" }
+          }
+          onClick={() => handleChecked(item)}
           variant="contained"
-        ></button>
+        ></h1>
         <Box
           style={{
             display: "flex",
@@ -38,16 +46,36 @@ function TodoComponent({ item }) {
           >
             {item.title}
           </h2>
-          <h2
-            style={{
-              fontSize: "2rem",
-              marginLeft: "1rem",
-              alignSelf: "center",
-              textAlign: "center",
-            }}
+          <Box>
+            <h2
+              style={{
+                fontSize: "2rem",
+                marginLeft: "1rem",
+                alignSelf: "center",
+                textAlign: "center",
+              }}
+            >
+              {item.createdAt}
+            </h2>
+            <h2
+              style={{
+                fontSize: "1rem",
+                alignSelf: "center",
+                textAlign: "center",
+              }}
+            >
+              {item.createdTime}
+            </h2>
+          </Box>
+          <Button variant="contained" onClick={() => deleteItem(item.docId)}>
+            Delete
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => handleEdit(item.docId, item.title)}
           >
-            {item.createdAt}
-          </h2>
+            edit
+          </Button>
         </Box>
       </Box>
     </>

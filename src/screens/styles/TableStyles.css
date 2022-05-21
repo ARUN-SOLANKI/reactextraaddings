@@ -1,0 +1,75 @@
+.myTodo {
+  max-width: 100rem;
+  margin: auto;
+}
+.inputContainer {
+  display: flex;
+  margin: 1rem 0rem;
+}
+.table {
+  width: 100%;
+  border: 2px solid rgb(51, 121, 194);
+  background-color: #fff;
+}
+
+.TableHeadings {
+  display: flex;
+  background-color: rgb(51, 121, 194);
+  color: #fff;
+  font-size: 1.9rem;
+  padding: 1rem 0rem;
+}
+
+.tableBody {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tableData {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.tr1 {
+  width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+}
+.col1 {
+  width: 10%;
+  align-self: center;
+  text-align: center;
+}
+.tr2 {
+  width: 55%;
+  padding: 0px, 1.5rem;
+  align-self: center;
+}
+.col2 {
+  width: 55%;
+  align-self: center;
+  text-align: center;
+}
+.tr3 {
+  width: 20%;
+  align-self: center;
+  text-align: center;
+}
+.col3 {
+  width: 20%;
+  align-self: center;
+  text-align: center;
+}
+.tr4 {
+  width: 15%;
+  display: flex;
+  justify-content: space-around;
+  align-self: center;
+}
+.col4 {
+  width: 15%;
+  align-self: center;
+  text-align: center;
+}

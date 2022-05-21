@@ -1,0 +1,41 @@
+.navbar {
+  /* background-color: #3379c2; */
+  background: linear-gradient(to right, #fa7c30 10%, #3379c2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo {
+  height: 70px;
+  width: 80px;
+}
+
+.Navlinks {
+  width: 30%;
+  display: flex;
+  font-size: 2rem;
+  justify-content: space-around;
+}
+
+.links {
+  text-decoration: none;
+  color: #fff;
+}
+
+.links:focus {
+  text-decoration: none;
+  color: #ed6c02;
+}
+.links:hover {
+  color: #ed6c02;
+}
+
+.signout {
+  position: absolute;
+  color: #ed6c02;
+  right: 5rem;
+  background-color: rgba(0, 0, 0, 0%);
+  border: none;
+  height: 3rem;
+  width: 3rem;
+}

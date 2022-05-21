@@ -1,6 +1,7 @@
-import { TextField, Button, Box } from "@mui/material";
+import { TextField, Button, Box, DataGrid } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import TodoComponent from "../components/TodoComponent";
 import "../screens/styles/TableStyles.css";
 import {
   collection,
@@ -15,7 +16,7 @@ import { db } from "../firebase.config";
 import Table from "../components/Table";
 import Navbar from "../components/Navbar";
 
-function Home() {
+function InCompleted() {
   const [list, setList] = useState([]);
   const [userId, setuserId] = useState("");
   const [inputValue, setInputValue] = useState("");
@@ -27,7 +28,10 @@ function Home() {
   }, []);
 
   const navigate = useNavigate();
-
+  const clearLocal = () => {
+    localStorage.clear();
+    navigate("/");
+  };
   const handleTodo = async () => {
     const todoobj = {
       title: inputValue,
@@ -57,7 +61,10 @@ function Home() {
     querySnapshot.forEach((doc) => {
       upArr.push({ ...doc.data(), docId: doc.id });
     });
-    setList(upArr);
+    const filterArray = upArr.filter((item) => {
+      return item.checked != true;
+    });
+    setList(filterArray);
   };
 
   const deleteItem = async (docId) => {
@@ -108,6 +115,12 @@ function Home() {
       console.log(error);
     }
   };
+  useEffect(() => {
+    const filteredList = list.filter((item) => {
+      return item.checked != false;
+    });
+    setList(filteredList);
+  }, []);
 
   return (
     <Box>
@@ -164,4 +177,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default InCompleted;
