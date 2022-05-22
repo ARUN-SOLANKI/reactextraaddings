@@ -1,3 +1,11 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+html {
+  font-size: 10px;
+}
 .navbar {
   /* background-color: #3379c2; */
   background: linear-gradient(to right, #fa7c30 10%, #3379c2);
@@ -38,4 +46,97 @@
   border: none;
   height: 3rem;
   width: 3rem;
+}
+
+@media (max-width: 800px) {
+  .navbar {
+    background: linear-gradient(to right, #fa7c30 10%, #3379c2);
+    display: block;
+    text-align: center;
+  }
+  .Navlinks {
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    width: 40%;
+  }
+  .signout {
+    position: absolute;
+    color: #ed6c02;
+    right: 5rem;
+    background-color: rgba(0, 0, 0, 0%);
+    border: none;
+    height: 3rem;
+    width: 3rem;
+    top: 3rem;
+  }
+}
+@media (max-width: 620px) {
+  .navbar {
+    background: linear-gradient(to right, #fa7c30 10%, #3379c2);
+    display: block;
+    text-align: center;
+  }
+  .Navlinks {
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+  }
+  .signout {
+    position: absolute;
+    color: #ed6c02;
+    right: 5rem;
+    background-color: rgba(0, 0, 0, 0%);
+    border: none;
+    height: 3rem;
+    width: 3rem;
+    top: 3rem;
+  }
+}
+@media (max-width: 480px) {
+  .navbar {
+    background: linear-gradient(to right, #fa7c30 10%, #3379c2);
+    display: block;
+    text-align: center;
+  }
+  .Navlinks {
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+  }
+  .signout {
+    position: absolute;
+    color: #ed6c02;
+    right: 5rem;
+    background-color: rgba(0, 0, 0, 0%);
+    border: none;
+    height: 3rem;
+    width: 3rem;
+    top: 3rem;
+  }
+}
+@media (max-width: 400px) {
+  .navbar {
+    background: linear-gradient(to right, #fa7c30 10%, #3379c2);
+    display: block;
+    text-align: center;
+  }
+  .Navlinks {
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+  }
+  .signout {
+    position: absolute;
+    color: #ed6c02;
+    right: 5rem;
+    background-color: rgba(0, 0, 0, 0%);
+    border: none;
+    height: 3rem;
+    width: 3rem;
+    top: 3rem;
+  }
 }

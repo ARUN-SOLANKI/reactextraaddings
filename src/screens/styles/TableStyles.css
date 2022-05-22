@@ -73,3 +73,134 @@
   align-self: center;
   text-align: center;
 }
+
+@media (max-width: 550px) {
+  .myTodo {
+    max-width: 100rem;
+    margin: 0px;
+  }
+  .table {
+    width: 100%;
+    border: 2px solid rgb(51, 121, 194);
+    background-color: #fff;
+  }
+  .TableHeadings {
+    display: flex;
+    background-color: rgb(51, 121, 194);
+    color: #fff;
+    font-size: 1.3rem;
+    padding: 1rem 0rem;
+  }
+
+  .tr1 {
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+  }
+  .col1 {
+    width: 10%;
+    align-self: center;
+    text-align: center;
+  }
+  .tr2 {
+    width: 55%;
+    padding: 0px, 1.5rem;
+    align-self: center;
+  }
+  .col2 {
+    width: 55%;
+    align-self: center;
+    text-align: center;
+  }
+  .tr3 {
+    width: 20%;
+    align-self: center;
+    text-align: center;
+  }
+  .tr3 h2 {
+    font-size: 1.2rem;
+  }
+  .tr3 h5 {
+    font-size: 0.8rem;
+  }
+  .col3 {
+    width: 20%;
+    align-self: center;
+    text-align: center;
+  }
+  .tr4 {
+    width: 15%;
+    display: flex;
+    justify-content: space-around;
+    align-self: center;
+  }
+  .col4 {
+    width: 15%;
+    align-self: center;
+    text-align: center;
+  }
+}
+@media (max-width: 350px) {
+  .myTodo {
+    max-width: 100rem;
+    margin: 0px;
+  }
+  .table {
+    width: 100%;
+    border: 2px solid rgb(51, 121, 194);
+    background-color: #fff;
+  }
+  .TableHeadings {
+    display: flex;
+    background-color: rgb(51, 121, 194);
+    color: #fff;
+    font-size: 1rem;
+    padding: 1rem 0rem;
+  }
+
+  .tr1 {
+    width: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+  }
+  .col1 {
+    width: 10%;
+    align-self: center;
+    text-align: center;
+  }
+  .tr2 {
+    width: 55%;
+    padding: 0px, 1.5rem;
+    align-self: center;
+  }
+  .col2 {
+    width: 55%;
+    align-self: center;
+    text-align: center;
+  }
+  .tr3 {
+    width: 20%;
+    align-self: center;
+    text-align: center;
+  }
+  .col3 {
+    width: 20%;
+    align-self: center;
+    text-align: center;
+  }
+  .tr4 {
+    width: 15%;
+    display: flex;
+    justify-content: space-around;
+    align-self: center;
+  }
+  .col4 {
+    width: 15%;
+    align-self: center;
+    text-align: center;
+  }
+}
