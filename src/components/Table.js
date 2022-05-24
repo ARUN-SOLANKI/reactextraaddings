@@ -1,14 +1,12 @@
 import React from "react";
 import "../screens/styles/TableStyles.css";
-import { Button, Box, IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { FaCheck, FaCircleNotch, FaTrash, FaEdit } from "react-icons/fa";
 function Table({
   item,
   deleteItem,
   handleEdit,
-  handleUppdate,
-  isUpdate,
-  setIsUpdate,
+
   handleChecked,
 }) {
   return (

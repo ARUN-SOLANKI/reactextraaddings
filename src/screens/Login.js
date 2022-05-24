@@ -7,6 +7,7 @@ import { Alert } from "@mui/material";
 
 function Login() {
   const [toggleCompo, setToggleCompo] = useState(true);
+  const [bgImg, setBgImg] = useState("");
   const [errMsg, setErrMsg] = useState({
     Status: false,
     alertType: "",
@@ -43,6 +44,13 @@ function Login() {
 
     console.log(errstatus, alerttype, errmsg);
   };
+
+  const randomImg = async () => {
+    const imgs = await fetch("https://source.unsplash.com/random");
+    setBgImg = imgs.url;
+    console.log(imgs, "-----><>>>>>><<<<<");
+  };
+  randomImg();
 
   return (
     <div className="outerContainer">

@@ -7,16 +7,11 @@ import {
   IconButton,
   CircularProgress,
 } from "@mui/material";
-import { FaGoogle, FaFacebook, FaYoutube, FaGithub } from "react-icons/fa";
+import { FaGoogle, FaFacebook, FaGithub } from "react-icons/fa";
 import {
   getAuth,
   signInWithPopup,
-  signInWithRedirect,
-  GoogleAuthProvider,
-  getRedirectResult,
-  GithubAuthProvider,
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { provider, Gitprovider } from "../firebase.config";
 import { useNavigate } from "react-router-dom";
@@ -58,7 +53,7 @@ function LoginComponent({ setToggleCompo, toggleCompo, errAlert }) {
         setToken(res.user.accessToken);
       }
     } catch (err) {
-      errAlert(true, "error", "something went wrong");
+      errAlert(true, "error", "Something Went Wrong");
       console.log(err);
     }
   };
@@ -70,7 +65,7 @@ function LoginComponent({ setToggleCompo, toggleCompo, errAlert }) {
       const data = await signInWithEmailAndPassword(auth, email, password);
       if (data) {
         setIsLoading(false);
-        errAlert(true, "success", "login successfully");
+        errAlert(true, "success", "Login Successfully");
         setUserDetails({
           email: "",
           password: "",
@@ -81,7 +76,7 @@ function LoginComponent({ setToggleCompo, toggleCompo, errAlert }) {
       setToken(data.user.accessToken);
     } catch (err) {
       setIsLoading(false);
-      errAlert(true, "error", "something wen wrong");
+      errAlert(true, "error", "Something Went Wrong");
       console.error(err);
     }
   };

@@ -5,14 +5,12 @@ import "../screens/styles/NavbarStyles.css";
 import { FaSignOutAlt } from "react-icons/fa";
 
 const Navbar = ({ isLoading }) => {
-  const [screenSize, setScreenSize] = useState(window.innerWidth);
   const navigate = useNavigate();
   const clearLocal = () => {
     localStorage.clear();
     navigate("/");
   };
 
-  console.log(screenSize);
   return (
     <div className="navbar">
       <img src={require("../assets/logo.png")} className="logo" />

@@ -15,10 +15,11 @@ html {
 .leftContainer {
   height: 100vh;
   width: 40%;
-  background-image: url("../../assets/users.png");
+  /* background-image: url("../../assets/users.png"); */
+  background-image: url("https://source.unsplash.com/random");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: contain;
+  background-size: cover;
 }
 
 .rightContainer {

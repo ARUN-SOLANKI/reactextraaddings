@@ -1,4 +1,13 @@
-import { TextField, Button, Box, LinearProgress } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Box,
+  LinearProgress,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../screens/styles/TableStyles.css";
@@ -10,6 +19,7 @@ import {
   doc,
   setDoc,
 } from "firebase/firestore";
+import _ from "underscore";
 
 import { db } from "../firebase.config";
 import Table from "../components/Table";
@@ -22,6 +32,7 @@ function Home() {
   const [isUpdate, setIsUpdate] = useState(false);
   const [editDetails, setEditDetails] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [sortby, setSortBy] = useState("");
   useEffect(() => {
     const Userid = localStorage.getItem("userId");
     setuserId(Userid);
@@ -112,10 +123,17 @@ function Home() {
     }
   };
 
+  const handleChange = (e) => {
+    setSortBy(e.target.value);
+    const filtereddata = _.sortBy(list, e.target.value);
+    setList(filtereddata);
+  };
+
   return (
     <Box>
       <Navbar isLoading={isLoading} />
       {isLoading && <LinearProgress />}
+
       <Box className="myTodo">
         <Box className="inputContainer">
           <TextField
@@ -138,6 +156,33 @@ function Home() {
             </Button>
           )}
         </Box>
+        <box>
+          <Select
+            style={{ marginBottom: "10px", width: "100px" }}
+            value={sortby}
+            displayEmpty
+            renderValue={(selected) => {
+              if (selected.length === 0) {
+                return <em>Sort by</em>;
+              } else if (selected == "title") {
+                return "name";
+              } else if (selected == "createdTime") {
+                return "time";
+              } else if (selected == "checked") {
+                return "checked";
+              }
+              return "date";
+            }}
+            onChange={handleChange}
+            color="primary"
+            size="small"
+          >
+            <MenuItem value={"createdAt"}>date</MenuItem>
+            <MenuItem value={"createdTime"}>time</MenuItem>
+            <MenuItem value={"title"}>name</MenuItem>
+            <MenuItem value={"checked"}>checked</MenuItem>
+          </Select>
+        </box>
 
         <Box className="table">
           <Box className="TableHeadings">
