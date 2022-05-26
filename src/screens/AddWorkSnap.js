@@ -17,6 +17,13 @@ import { FaPhotoVideo } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import TaskWithPhoto from "../components/TaskWithPhoto";
 import { db, storage } from "../firebase.config";
+import {
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from "@mui/material";
 const storageRef = ref(storage);
 
 const AddWorkSnap = () => {
@@ -36,6 +43,9 @@ const AddWorkSnap = () => {
     const fileUploaded = event.target.files[0];
     setImgInfo(fileUploaded);
   };
+
+  console.log("initialData", dataWithImage);
+  console.log(dataWithImage.length, "dataLegnth1");
 
   const handleUploads = async () => {
     if (textArea && imgInfo.name) {
@@ -67,7 +77,6 @@ const AddWorkSnap = () => {
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setimages(downloadURL);
-            console.log(downloadURL);
           });
         }
       );
@@ -97,25 +106,33 @@ const AddWorkSnap = () => {
   //   } catch (error) {}
   // };
   useEffect(() => {
-    const getData = async () => {
-      const newArr = [];
-      const querySnapshot = await getDocs(collection(db, "snapWork"));
-      querySnapshot.forEach((doc) => {
-        newArr.push(doc.data());
-        console.log(doc.data());
-      });
-      setdataWithImage(newArr);
-    };
     getData();
   }, []);
 
-  console.log(dataWithImage);
+  const getData = async () => {
+    const querySnapshot = await getDocs(collection(db, "snapWork"));
+    querySnapshot.forEach((doc) => {
+      // newArr.push(doc.data());
+      getImageUrl(doc?.data());
+      // console.log(doc.data());
+    });
+  };
 
+  let newArr = [];
   const getImageUrl = async (imgName) => {
+    // 5 times
     const data = await getDownloadURL(
-      ref(storage, `${localStorage.getItem("userId")}/${imgName}`)
+      ref(storage, `${localStorage.getItem("userId")}/${imgName.imageName}`)
     );
-    console.log(data, "========><><><><><><><><><============");
+    const newObj = {
+      ...imgName,
+      ImgUrl: data,
+    };
+    // console.log(newObj, "newObjnewObjnewObjnewObj");
+    // let xyz = await Promise.resolve(newArr.push(newObj));
+    newArr = [...newArr, newObj];
+
+    setdataWithImage(newArr);
   };
 
   return (
@@ -124,54 +141,101 @@ const AddWorkSnap = () => {
       <Navbar />
       <div
         style={{
-          backgroundColor: "#fff",
-          width: "500px",
-          padding: "10px 20px",
+          display: "flex",
+          justifyContent: "space-around",
+          width: "100%",
+          marginTop: "10px",
+          marginLeft: "5px",
         }}
       >
-        <textarea
-          rows={5}
-          placeholder="write description about task"
-          style={{ width: "100%", padding: "5px" }}
-          value={textArea}
-          onChange={(e) => setTextArea(e.target.value)}
-        ></textarea>
-        <div style={{ backgroundColor: "#ccc" }}>
+        <div
+          style={{
+            backgroundColor: "#fff",
+            width: "50%",
+            padding: "10px 20px",
+          }}
+        >
+          <textarea
+            rows={5}
+            placeholder="write description about task"
+            style={{ width: "100%", padding: "5px" }}
+            value={textArea}
+            onChange={(e) => setTextArea(e.target.value)}
+          ></textarea>
+          <div style={{ backgroundColor: "#ccc" }}>
+            <Button
+              onClick={handleClick}
+              style={{
+                display: "flex",
+                border: "1px solid #ccc",
+                background: "#fff",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+                padding: "2px 5px",
+                color: "blue",
+              }}
+            >
+              <FormControl>
+                <FormLabel id="demo-radio-buttons-group-label">
+                  Gender
+                </FormLabel>
+                <RadioGroup
+                  aria-labelledby="demo-radio-buttons-group-label"
+                  defaultValue="female"
+                  name="radio-buttons-group"
+                >
+                  <FormControlLabel
+                    value="female"
+                    control={<Radio />}
+                    label="Female"
+                  />
+                  <FormControlLabel
+                    value="male"
+                    control={<Radio />}
+                    label="Male"
+                  />
+                  <FormControlLabel
+                    value="other"
+                    control={<Radio />}
+                    label="Other"
+                  />
+                </RadioGroup>
+              </FormControl>
+              <p>Upload a ScreenShot</p> <FaPhotoVideo size={20} />
+            </Button>
+          </div>
+          <input
+            type="file"
+            ref={hiddenFileInput}
+            onChange={handleChange}
+            style={{ display: "none" }}
+          />
+
           <Button
-            onClick={handleClick}
-            style={{
-              display: "flex",
-              border: "1px solid #ccc",
-              background: "#fff",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "100%",
-              padding: "2px 5px",
-              color: "blue",
-            }}
+            onClick={handleUploads}
+            variant="contained"
+            fullWidth
+            style={{ marginTop: "10px" }}
           >
-            <p>Upload a ScreenShot</p> <FaPhotoVideo size={20} />
+            Submit
           </Button>
         </div>
-        <input
-          type="file"
-          ref={hiddenFileInput}
-          onChange={handleChange}
-          style={{ display: "none" }}
-        />
-
-        <Button
-          onClick={handleUploads}
-          variant="contained"
-          fullWidth
-          style={{ marginTop: "10px" }}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            width: "50%",
+            height: "100vh",
+            overflow: "scroll",
+            // justifyContent: "space-between",
+          }}
         >
-          Submit
-        </Button>
+          {dataWithImage.map((item, index) => {
+            return <TaskWithPhoto item={item} />;
+          })}
+        </div>
       </div>
-      <button onClick={getImageUrl}>click to connect</button>
-
-      <TaskWithPhoto />
     </>
   );
 };

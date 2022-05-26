@@ -1,25 +1,29 @@
 import React from "react";
 
-function TaskWithPhoto() {
+function TaskWithPhoto({ item }) {
+  console.log(item, "---------->");
   return (
     <div
       style={{
         background: "#fff",
         width: "30%",
-        padding: "5px 10px",
-        marginTop: "10px",
+        height: "250px",
+        display: "flex",
+        justifyContent: "center",
+        margin: "0px 10px",
+        marginBottom: "20px",
+        overflow: "hidden",
       }}
     >
-      <img
-        src={require("../assets/logo.png")}
-        style={{ height: 250, width: 250 }}
-      />
-      <h3>description :- </h3>
-      <p>
-        lvuasn jfbasujc bsujxc cqabcjnkc casink askhckas aschcibc siahci cbaiscb
-        icgasj jgcas cagbsjc icgab nhcciakb vwbch sb w ujcbahjn jscbaj sdjbc
-        jsbcj chsbj skcb jqw whcv uhs u
-      </p>
+      <div style={{ padding: "10px 10px", width: "80%" }}>
+        <img
+          src={item.ImgUrl}
+          style={{ height: 100, width: 100, background: "blue" }}
+        />
+        <p>{item.status ? "true" : "false"}</p>
+        <h3>description :- </h3>
+        <p>{item.descriptions}</p>
+      </div>
     </div>
   );
 }
