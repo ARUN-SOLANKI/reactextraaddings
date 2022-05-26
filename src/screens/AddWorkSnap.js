@@ -35,7 +35,7 @@ const AddWorkSnap = () => {
   const [allImg, setallImg] = useState([]);
   const [textArea, setTextArea] = useState("");
   const [dataWithImage, setdataWithImage] = useState([]);
-  const [isComplete, setIsComplete] = useState(false);
+  const [isComplete, setIsComplete] = useState("");
   const [isLoading, setIsLoading] = useState({
     getdata: false,
     loadImage: false,
@@ -88,7 +88,7 @@ const AddWorkSnap = () => {
 
       setTextArea("");
       setImgInfo({});
-      setIsComplete(false);
+      setIsComplete("");
 
       setIsLoading({ ...isLoading, loadImage: false });
     }
@@ -126,7 +126,6 @@ const AddWorkSnap = () => {
     querySnapshot.forEach((doc) => {
       // newArr.push(doc.data());
       getImageUrl(doc?.data());
-      // console.log(doc.data());
     });
   };
 
@@ -148,6 +147,7 @@ const AddWorkSnap = () => {
     setIsLoading({ ...isLoading, getdata: false });
   };
 
+  console.log(dataWithImage, "dataWithImage");
   return (
     <>
       <Navbar />
