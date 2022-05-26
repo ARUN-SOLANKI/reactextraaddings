@@ -13,7 +13,7 @@ import {
   listAll,
 } from "firebase/storage";
 import React, { useState, useEffect } from "react";
-import { FaPhotoVideo } from "react-icons/fa";
+import { FaPhotoVideo, FaCheck } from "react-icons/fa";
 import Navbar from "../components/Navbar";
 import TaskWithPhoto from "../components/TaskWithPhoto";
 import { db, storage } from "../firebase.config";
@@ -23,6 +23,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  CircularProgress,
 } from "@mui/material";
 const storageRef = ref(storage);
 
@@ -30,11 +31,15 @@ const AddWorkSnap = () => {
   const hiddenFileInput = React.useRef(null);
   const [images, setimages] = useState("");
   const [Progresspercent, setProgresspercent] = useState("");
-  const [imgInfo, setImgInfo] = useState("");
+  const [imgInfo, setImgInfo] = useState({});
   const [allImg, setallImg] = useState([]);
   const [textArea, setTextArea] = useState("");
   const [dataWithImage, setdataWithImage] = useState([]);
   const [isComplete, setIsComplete] = useState(false);
+  const [isLoading, setIsLoading] = useState({
+    getdata: false,
+    loadImage: false,
+  });
 
   const handleClick = (event) => {
     hiddenFileInput.current.click();
@@ -44,11 +49,9 @@ const AddWorkSnap = () => {
     setImgInfo(fileUploaded);
   };
 
-  console.log("initialData", dataWithImage);
-  console.log(dataWithImage.length, "dataLegnth1");
-
   const handleUploads = async () => {
     if (textArea && imgInfo.name) {
+      setIsLoading({ ...isLoading, loadImage: true });
       const docRef = await addDoc(collection(db, "snapWork"), {
         descriptions: textArea,
         imageName: imgInfo.name,
@@ -69,6 +72,7 @@ const AddWorkSnap = () => {
           const progress = Math.round(
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           );
+
           setProgresspercent(progress);
         },
         (error) => {
@@ -80,6 +84,13 @@ const AddWorkSnap = () => {
           });
         }
       );
+      await getData();
+
+      setTextArea("");
+      setImgInfo({});
+      setIsComplete(false);
+
+      setIsLoading({ ...isLoading, loadImage: false });
     }
   };
 
@@ -110,6 +121,7 @@ const AddWorkSnap = () => {
   }, []);
 
   const getData = async () => {
+    setIsLoading({ ...isLoading, getdata: true });
     const querySnapshot = await getDocs(collection(db, "snapWork"));
     querySnapshot.forEach((doc) => {
       // newArr.push(doc.data());
@@ -133,12 +145,13 @@ const AddWorkSnap = () => {
     newArr = [...newArr, newObj];
 
     setdataWithImage(newArr);
+    setIsLoading({ ...isLoading, getdata: false });
   };
 
   return (
     <>
-      {/* <div>{Progresspercent}</div> */}
       <Navbar />
+
       <div
         style={{
           display: "flex",
@@ -169,8 +182,9 @@ const AddWorkSnap = () => {
               </FormLabel>
               <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="female"
+                defaultValue=""
                 name="radio-buttons-group"
+                value={isComplete}
                 row
                 onChange={(e) => {
                   setIsComplete(e.target.value);
@@ -188,21 +202,40 @@ const AddWorkSnap = () => {
                 />
               </RadioGroup>
             </FormControl>
-            <Button
-              onClick={handleClick}
-              style={{
-                display: "flex",
-                border: "1px solid #ccc",
-                background: "#fff",
-                justifyContent: "space-between",
-                alignItems: "center",
-                width: "100%",
-                padding: "2px 5px",
-                color: "blue",
-              }}
-            >
-              <p>Upload a ScreenShot</p> <FaPhotoVideo size={20} />
-            </Button>
+            <div style={{ display: "flex" }}>
+              <Button
+                onClick={handleClick}
+                style={{
+                  display: "flex",
+                  border: "1px solid #ccc",
+                  background: "#fff",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: imgInfo.name ? "60%" : "100%",
+                  padding: "2px 5px",
+                  color: "blue",
+                }}
+              >
+                <p>Upload a ScreenShot</p> <FaPhotoVideo size={20} />
+              </Button>
+              {imgInfo.name && (
+                <Button
+                  onClick={handleClick}
+                  style={{
+                    display: "flex",
+                    border: "1px solid #ccc",
+                    background: "#fff",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    width: "40%",
+                    padding: "2px 5px",
+                    color: "green",
+                  }}
+                >
+                  <p>{imgInfo.name}</p> <FaCheck size={15} />
+                </Button>
+              )}
+            </div>
           </div>
           <input
             type="file"
@@ -217,23 +250,42 @@ const AddWorkSnap = () => {
             fullWidth
             style={{ marginTop: "10px" }}
           >
-            Submit
+            {isLoading.loadImage ? (
+              <CircularProgress color="warning" size={20} />
+            ) : (
+              "Submit"
+            )}
           </Button>
         </div>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            width: "50%",
-            height: "100vh",
-            overflow: "scroll",
-            // justifyContent: "space-between",
-          }}
-        >
-          {dataWithImage.map((item, index) => {
-            return <TaskWithPhoto item={item} />;
-          })}
-        </div>
+        {isLoading.getdata ? (
+          <div
+            style={{
+              width: "50%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flex: 1,
+              height: "90vh",
+            }}
+          >
+            <CircularProgress size={30} />
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              width: "50%",
+              height: "100vh",
+              overflow: "scroll",
+              // justifyContent: "space-between",
+            }}
+          >
+            {dataWithImage.map((item, index) => {
+              return <TaskWithPhoto item={item} isLoading={isLoading} />;
+            })}
+          </div>
+        )}
       </div>
     </>
   );

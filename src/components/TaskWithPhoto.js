@@ -1,7 +1,6 @@
 import React from "react";
 
 function TaskWithPhoto({ item }) {
-  console.log(item, "---------->");
   return (
     <div
       style={{
