@@ -24,6 +24,9 @@ const Navbar = ({ isLoading }) => {
         <Link to="/incompleted" className="links">
           Incomplete
         </Link>
+        <Link to="/addworksnap" className="links">
+          addworksnap
+        </Link>
       </div>
       <button className="signout" onClick={clearLocal}>
         <FaSignOutAlt size={20} />

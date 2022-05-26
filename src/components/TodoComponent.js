@@ -6,9 +6,7 @@ function TodoComponent({
   item,
   deleteItem,
   handleEdit,
-  handleUppdate,
-  isUpdate,
-  setIsUpdate,
+
   handleChecked,
 }) {
   return (

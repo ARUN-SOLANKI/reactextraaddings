@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import AddWorkSnap from "../screens/AddWorkSnap";
 import Completed from "../screens/Completed";
 import Home from "../screens/Home";
 import InCompleted from "../screens/InCompleted";
@@ -13,6 +14,7 @@ function Routers() {
         <Route path="home" element={<Home />} />
         <Route path="completed" element={<Completed />} />
         <Route path="incompleted" element={<InCompleted />} />
+        <Route path="addworksnap" element={<AddWorkSnap />} />
       </Routes>
     </>
   );
