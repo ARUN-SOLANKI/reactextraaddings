@@ -34,7 +34,7 @@ const AddWorkSnap = () => {
   const [allImg, setallImg] = useState([]);
   const [textArea, setTextArea] = useState("");
   const [dataWithImage, setdataWithImage] = useState([]);
-  const [alllistAll, setAlllistAll] = useState([]);
+  const [isComplete, setIsComplete] = useState(false);
 
   const handleClick = (event) => {
     hiddenFileInput.current.click();
@@ -54,7 +54,7 @@ const AddWorkSnap = () => {
         imageName: imgInfo.name,
         userId: localStorage.getItem("userId"),
         createdAt: new Date(),
-        status: false,
+        status: isComplete,
       });
 
       const storageRef = ref(
@@ -162,7 +162,32 @@ const AddWorkSnap = () => {
             value={textArea}
             onChange={(e) => setTextArea(e.target.value)}
           ></textarea>
-          <div style={{ backgroundColor: "#ccc" }}>
+          <div style={{}}>
+            <FormControl>
+              <FormLabel id="demo-radio-buttons-group-label">
+                Is Task Completed ?
+              </FormLabel>
+              <RadioGroup
+                aria-labelledby="demo-radio-buttons-group-label"
+                defaultValue="female"
+                name="radio-buttons-group"
+                row
+                onChange={(e) => {
+                  setIsComplete(e.target.value);
+                }}
+              >
+                <FormControlLabel
+                  value={true}
+                  control={<Radio />}
+                  label="complete"
+                />
+                <FormControlLabel
+                  value={false}
+                  control={<Radio />}
+                  label="not complete"
+                />
+              </RadioGroup>
+            </FormControl>
             <Button
               onClick={handleClick}
               style={{
@@ -176,32 +201,6 @@ const AddWorkSnap = () => {
                 color: "blue",
               }}
             >
-              <FormControl>
-                <FormLabel id="demo-radio-buttons-group-label">
-                  Gender
-                </FormLabel>
-                <RadioGroup
-                  aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="female"
-                  name="radio-buttons-group"
-                >
-                  <FormControlLabel
-                    value="female"
-                    control={<Radio />}
-                    label="Female"
-                  />
-                  <FormControlLabel
-                    value="male"
-                    control={<Radio />}
-                    label="Male"
-                  />
-                  <FormControlLabel
-                    value="other"
-                    control={<Radio />}
-                    label="Other"
-                  />
-                </RadioGroup>
-              </FormControl>
               <p>Upload a ScreenShot</p> <FaPhotoVideo size={20} />
             </Button>
           </div>
