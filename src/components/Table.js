@@ -2,13 +2,7 @@ import React from "react";
 import "../screens/styles/TableStyles.css";
 import { Box, IconButton } from "@mui/material";
 import { FaCheck, FaCircleNotch, FaTrash, FaEdit } from "react-icons/fa";
-function Table({
-  item,
-  deleteItem,
-  handleEdit,
-
-  handleChecked,
-}) {
+function Table({ item, deleteItem, handleEdit, handleChecked }) {
   return (
     <Box className="tableData">
       <Box className="tr1">
@@ -38,7 +32,7 @@ function Table({
         <IconButton
           aria-label="edit"
           color={"warning"}
-          onClick={() => handleEdit(item.docId, item.title)}
+          onClick={() => handleEdit(item.docId, item.title, item.taskId)}
         >
           <FaEdit />
         </IconButton>

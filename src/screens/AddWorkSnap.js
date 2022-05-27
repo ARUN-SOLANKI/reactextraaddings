@@ -4,13 +4,16 @@ import {
   collection,
   onSnapshot,
   doc,
+  updateDoc,
   getDocs,
+  setDoc,
 } from "firebase/firestore";
 import {
   getDownloadURL,
   ref,
   uploadBytesResumable,
   listAll,
+  writeBatch,
 } from "firebase/storage";
 import React, { useState, useEffect } from "react";
 import { FaPhotoVideo, FaCheck } from "react-icons/fa";
@@ -24,6 +27,8 @@ import {
   FormControlLabel,
   Radio,
   CircularProgress,
+  Select,
+  MenuItem,
 } from "@mui/material";
 const storageRef = ref(storage);
 
@@ -39,7 +44,10 @@ const AddWorkSnap = () => {
   const [isLoading, setIsLoading] = useState({
     getdata: false,
     loadImage: false,
+    getTodoData: false,
   });
+  const [allTodos, setAllTodos] = useState([]);
+  const [taskSelected, setTaskSelected] = useState({});
 
   const handleClick = (event) => {
     hiddenFileInput.current.click();
@@ -50,14 +58,15 @@ const AddWorkSnap = () => {
   };
 
   const handleUploads = async () => {
-    if (textArea && imgInfo.name) {
+    if (textArea && imgInfo.name && taskSelected) {
       setIsLoading({ ...isLoading, loadImage: true });
       const docRef = await addDoc(collection(db, "snapWork"), {
         descriptions: textArea,
         imageName: imgInfo.name,
         userId: localStorage.getItem("userId"),
-        createdAt: new Date(),
+        updatedAt: new Date(),
         status: isComplete,
+        ...taskSelected,
       });
 
       const storageRef = ref(
@@ -84,7 +93,9 @@ const AddWorkSnap = () => {
           });
         }
       );
-      await getData();
+      getData()
+        .then((res) => handleUpdate())
+        .catch((err) => console.log(err));
 
       setTextArea("");
       setImgInfo({});
@@ -118,20 +129,21 @@ const AddWorkSnap = () => {
   // };
   useEffect(() => {
     getData();
+    getTodo();
   }, []);
 
   const getData = async () => {
     setIsLoading({ ...isLoading, getdata: true });
     const querySnapshot = await getDocs(collection(db, "snapWork"));
     querySnapshot.forEach((doc) => {
-      // newArr.push(doc.data());
-      getImageUrl(doc?.data());
+      if (doc?.data().userId == localStorage.getItem("userId")) {
+        getImageUrl(doc?.data());
+      }
     });
   };
 
   let newArr = [];
   const getImageUrl = async (imgName) => {
-    // 5 times
     const data = await getDownloadURL(
       ref(storage, `${localStorage.getItem("userId")}/${imgName.imageName}`)
     );
@@ -139,7 +151,6 @@ const AddWorkSnap = () => {
       ...imgName,
       ImgUrl: data,
     };
-    // console.log(newObj, "newObjnewObjnewObjnewObj");
     // let xyz = await Promise.resolve(newArr.push(newObj));
     newArr = [...newArr, newObj];
 
@@ -147,11 +158,54 @@ const AddWorkSnap = () => {
     setIsLoading({ ...isLoading, getdata: false });
   };
 
-  console.log(dataWithImage, "dataWithImage");
+  const getTodo = async () => {
+    const newArr = [];
+    setIsLoading({ ...isLoading, getTodoData: true });
+    const querySnapshot = await getDocs(
+      collection(db, localStorage.getItem("userId"))
+    );
+    querySnapshot.forEach((doc) => {
+      newArr.push(doc?.data());
+    });
+    setAllTodos(newArr);
+  };
+
+  const handleTask = (e) => {
+    if (e.target.value) {
+      setTaskSelected(e.target.value);
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const Userid = localStorage.getItem("userId");
+      dataWithImage?.forEach((item) => {
+        if (taskSelected.taskId == item.taskId) {
+          const docRef = doc(db, Userid, item.docId);
+          console.log(
+            docRef,
+            item.docId,
+            "docRefdocRefdocRefdocRefdocRefdocRef"
+          );
+
+          updateDoc(docRef, {
+            checked: item.status == "true" ? true : false,
+          });
+        }
+      });
+
+      // setEditDetails("");
+      // setInputValue("");
+      // setIsUpdate(false);
+      // setTaskId("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Navbar />
-
       <div
         style={{
           display: "flex",
@@ -175,6 +229,26 @@ const AddWorkSnap = () => {
             value={textArea}
             onChange={(e) => setTextArea(e.target.value)}
           ></textarea>
+          <box>
+            <Select
+              // value={taskSelected}
+              displayEmpty
+              renderValue={(selected) => {
+                if (selected) {
+                  return <em>{selected.title}</em>;
+                }
+                return "select your task";
+              }}
+              onChange={handleTask}
+              color="primary"
+              size="small"
+              fullWidth
+            >
+              {allTodos?.map((item) => {
+                return <MenuItem value={item}>{item.title}</MenuItem>;
+              })}
+            </Select>
+          </box>
           <div style={{}}>
             <FormControl>
               <FormLabel id="demo-radio-buttons-group-label">
@@ -187,6 +261,7 @@ const AddWorkSnap = () => {
                 value={isComplete}
                 row
                 onChange={(e) => {
+                  console.log(typeof e.target.value, "--------><><><M/>nbfsrt");
                   setIsComplete(e.target.value);
                 }}
               >
@@ -202,6 +277,7 @@ const AddWorkSnap = () => {
                 />
               </RadioGroup>
             </FormControl>
+
             <div style={{ display: "flex" }}>
               <Button
                 onClick={handleClick}

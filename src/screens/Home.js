@@ -33,6 +33,7 @@ function Home() {
   const [editDetails, setEditDetails] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [sortby, setSortBy] = useState("");
+  const [taskId, setTaskId] = useState("");
   useEffect(() => {
     const Userid = localStorage.getItem("userId");
     setuserId(Userid);
@@ -41,11 +42,14 @@ function Home() {
   const navigate = useNavigate();
 
   const handleTodo = async () => {
+    const Userid = localStorage.getItem("userId");
     const todoobj = {
       title: inputValue,
       createdAt: new Date().toLocaleDateString(),
       createdTime: new Date().toLocaleTimeString(),
       checked: false,
+      taskId: list.length + 1,
+      userId: Userid,
     };
     try {
       if (inputValue) {
@@ -93,17 +97,21 @@ function Home() {
         createdAt: new Date().toLocaleDateString(),
         createdTime: new Date().toLocaleTimeString(),
         checked: false,
+        taskId: taskId,
+        userId: Userid,
       });
       getData();
       setEditDetails("");
       setInputValue("");
       setIsUpdate(false);
+      setTaskId("");
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleEdit = (docId, title) => {
+  const handleEdit = (docId, title, taskId) => {
+    setTaskId(taskId);
     setEditDetails(docId);
     setIsUpdate(true);
     setInputValue(title);
